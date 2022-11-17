@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div class='row'>
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+<div class='col-sm-8'>
+<h4 class="page-header text-primary text-center">Admin Orders</h4>
+    <table class="table table-boardered">
+        <thread>
+            <tr>
+                <th> OrderN. </th>
+                <th> User </th>
+                <th>Date Orderd  </th>
+                <th> Status.</th>
+                <th>  </th>
+
+                
+                <th> Remove </th>
+
+            </tr>
+        </thread>
+        {% for orders in order %}
+        <tbody>
+            <tr>
+                <td>{{orders.id}}</td>
+                <td>{{orders.cartID}}</td>
+                <td>{{orders.orderDate}}</td>
+                {% if  orders.status == "Ordered" %}
+                  <td style="color:yellow" id='{{orders.id}}q'>{{orders.status}}</td>
+                {% elif orders.status == "Shipped" %}
+                  <td style="color:blue" id='{{orders.id}}q'>{{orders.status}}</td>
+                {% elif orders.status == "Out for Delivery" %}
+                  <td style="color:orange" id='{{orders.id}}q'>{{orders.status}}</td>
+                {% elif orders.status == "Delivered" %}
+                  <td style="color:green" id='{{orders.id}}q'>{{orders.status}}</td>
+                {% elif orders.status == "Cancelled" %}
+                  <td style="color:grey" id='{{orders.id}}q'>{{orders.status}}</td>
+                {% elif orders.status == "Return" %}
+                  <td style="color:red" id='{{orders.id}}q'>{{orders.status}}</td>
+                {%endif %}
+                {% comment %} <td> <a class="btn btn-success" href='/admincancelorder/{{ orders.id }}'> Cancel Order </a></td>
+                <td> <a class="btn btn-success" href='/delivered/{{ orders.id }}'> Delivered </a></td> {% endcomment %}
+                {% if  orders.status == "Ordered" %}
+                  <td> <a style="width:200px" class="btn btn-success" href='/shipped/{{orders.id}}'>Shipped</a></td>
+                {% elif orders.status == "Shipped" %}
+                  <td> <a style="width:200px" class="btn btn-success" href='/out_for_delivery/{{orders.id}}'>Out for Delivery</a></td>
+                {% elif orders.status == "Out for Delivery" %}
+                  <td> <a style="width:200px" class="btn btn-success" href='/delivered/{{orders.id}}'>Delivered</a></td>
+                {% elif orders.status == "Return" %}
+                  <td> <a style="width:200px" class="btn btn-success" href='/approve/{{orders.id}}'>Approve</a></td>
+                {%endif %}
+            <tr>
+        <tbody>
+        {% endfor %}
+        </div>
+
+        
+
+
+
+{% endblock %}

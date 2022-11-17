@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+
+</head>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+        <form name='edit' action='/editcategory/{{data.id}}' method='POST' autocomplete='off' id='addform'>
+            {% csrf_token %}
+              <div class="form-outline mb-4">
+                <input type="text" name="category" class="form-control" required style="width:200px" placeholder="{{data.category}}">
+                <br>
+                <button type="submit" class="btn btn-primary"  onclick=edit()>Edit Category</button><br>
+              <label style="color:red">{{message}}</label>
+                
+              </div>
+            </form>
+            <a class="btn btn-primary"  href="/admincategory/">Back</a><br>
+</div>
+<script>
+
+    function edit(){
+
+    if (document.getElementById('category').value.length != 0){
+      swal({
+        title: "Are you sure?",
+        text: "You are going Edit this Category?All items Related will be deleted",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Category Edited", {
+            icon: "success",
+          });
+          document.forms["edit"].submit();
+        } else {
+          swal("Category Not Edited");
+        }
+      });
+    }
+}
+</script>
+
+
+{% endblock %}

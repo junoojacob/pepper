@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div class='row'>
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+<div class='col-sm-8'>
+<h4 class="page-header text-primary text-center">Category Details</h4>
+    <table class="table table-boardered">
+        <thread>
+            <tr>
+                <th> Sl. </th>
+                <th> Category </th>
+                <th> EDIT </th>
+                <th>DELETE</th>
+            </tr>
+        </thread>
+        {% for data in datas %}
+        <tbody>
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.category}}</td>
+                <td><button  class="btn btn-success" onclick=edit('{{data.id}}')  >EDIT </button></td>
+                <td><button  class="btn btn-danger" onclick=del('{{data.id}}')  >DELETE </button></td>
+            <tr>
+        <tbody>
+        <center>
+        {% endfor %}
+</div>
+        
+    
+    <form action='/addcategory/' method='POST' autocomplete='off' id='addform' name= 'addcategory'>
+        {% csrf_token %}
+          <div class="form-outline mb-4">
+            <input type="text" id='category' name="category" class="form-control" required style="width:200px">
+            <br>
+            <button type="submit" class="btn btn-primary" id='addbutton' onclick=add()>Add Category</button><br>
+          <label style="color:red">{{message}}</label>
+  
+            
+          </div>
+        </form>
+        <script>
+
+          function del(id){
+            swal({
+              title: "Are you sure?",
+              text: "You are going delete this Category?All items Related will be deleted",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                swal("Category Deleted", {
+                  icon: "success",
+                });
+                window.location = '/deletecategory/'+id;
+              } else {
+                swal("Category Not Deleted");
+              }
+            });
+          }
+
+          function edit(id){
+            swal({
+              title: "Are you sure?",
+              text: "You are going edit this Category?All items Related will be affected",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willEdit) => {
+              if (willEdit) {
+                swal("Continue with Edit", {
+                  icon: "success",
+                });
+                window.location = '/editcategory/'+id;
+              } else {
+                swal("Edit Cancelled");
+              }
+            });
+          }
+
+          function add(){
+            val=document.getElementById('category').value
+            if (val.length != 0){
+                swal({
+                  title: "Are you sure?",
+                  text: "You are going to add New Category",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                    swal("Continue with new Category", {
+                      icon: "success",
+                    });
+                    document.forms["addcategory"].submit(); 
+                  } else {
+                    swal("New category not cancelled");
+                  }
+                });
+              }
+            }
+
+
+          
+      </script>
+  
+        
+      
+{% endblock %}

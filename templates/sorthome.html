@@ -1,0 +1,105 @@
+
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div style='min-height: 80vh' >
+    <div class="row">
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-primary col-md-2" >
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">All Products</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                {%for item in category%}
+            <li class="nav-item">
+                <a href="/sorthome/{{item.id}}"  class="nav-link text-white" aria-current="page">
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                {{item.category}}
+                </a>
+            </li>
+            {%endfor%}
+            </ul>
+            <hr>
+            
+        </div>
+        <div class="row d-flex justify-content-center col-md-10">
+            <div class="col-md-10">
+
+                    <div class="row ">
+                        
+                        <div class="col-md-2">
+                        </div>
+                        
+                    </div>
+    </div>
+    
+    <br>
+
+
+
+
+
+
+    <div class="container" style=''>
+
+        <div class="row ">
+        {% for product in products reversed %}
+                <div class=" col-md-3" >
+                <div class="card" id="img" style="width: 15rem;height:30rem ; margin : 10px">
+                    <img class="card-img-top" src="{{product.product_image1.url}}" alt="Card image cap">
+                    <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.detail}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Price : Rs.{{product.price}} 
+                        {% if product.stock.value > 10 %} 
+                        || Stock Left :{{product.stock}}
+                        {%else%}
+                        {%endif%}</li>
+                    </ul>
+                    <div class="card-body">
+                    <a href="/addcart/{{product.id}}" class="card-link">Add to Cart</a>
+                    </div>
+                </div>
+                </div>
+        {%endfor%}
+        <center>
+        <div class="pagination; margin: auto;">
+                <span class="step-links">
+                    {% if products.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ products.previous_page_number }}">previous</a>
+                    {% endif %}
+                
+                    <span class="current">
+                        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                    </span>
+            
+                    {% if products.has_next %}
+                        <a href="?page={{ products.next_page_number }}">next</a>
+                        <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                    
+                    
+                </span>
+        </div>
+    </div>
+</div>
+<center>
+<script>
+
+	var options = {
+			
+		zoomWidth: 400
+		offset: {vertical: 1, horizontal: 10},
+		scale:1.5
+	}
+	new ImageZoom(document.getElementByID("img"),options);
+</script>
+
+{% include 'footer.html' %}
+
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div ="row"
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+<div class='row'>
+
+  <div class='col-sm-4'>
+      <canvas id="myChart2" width="20" height="20"></canvas>Number of Order for each day
+    </div>
+  <div class='col-sm-4'>
+      <canvas id="myChart1" width="20" height="20"></canvas>Products sold overall by item
+    </div>
+    <div class='col-sm-4'>
+      <canvas id="myChart3" width="20" height="20"></canvas>Sale per Day
+    </div>
+</div>
+  
+  <script>
+    function start(){
+      chart1();
+      chart2();
+      chart3();
+      }
+      window.onload = start(); 
+      function chart1(){
+    
+      const ctx = document.getElementById('myChart1').getContext('2d');
+      const 
+      myChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: {{plabel|safe}},
+              datasets: [{
+                  label: 'Number',
+                  data: {{pdata}},
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }
+              ]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    }  
+
+  function chart2(){
+    const ctx = document.getElementById('myChart2').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{labels|safe}},
+            datasets: [{
+                label: 'Numberof Orders',
+                data: {{data}},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+  }
+
+  function chart3(){
+    
+    const ctx = document.getElementById('myChart3').getContext('2d');
+    const 
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{slabel|safe}},
+            datasets: [{
+                label: 'Rupess',
+                data: {{sdata}},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+  }  
+
+
+
+    </script>
+</div>
+</div>
+{% endblock %}

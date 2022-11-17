@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div style='min-height: 80vh' >
+<h4 class="page-header text-primary text-center">Cart</h4>
+    <table class="table table-boardered">
+        <thread>
+            <tr>
+                <th> Sl </th>
+                <th>  </th>
+                <th> Item </th>
+                <th>  Nos</th>
+                <th> Price</th>
+                <th>  </th>
+
+                
+                <th>  </th>
+
+            </tr>
+        </thread>
+        {% for cart_item in cart_items %}
+        <tbody>
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><img id="myimage1" onmouseover=img1() src="{{cart_item.product.product_image1.url}}" width="50" height="50"></td>
+                <td>{{cart_item.product.name}}</td>
+                <td> <a class="btn btn-success" onclick=sub('{{cart_item.product.id}}')> - </a>
+                    <label id='{{ cart_item.product.id }}q'>{{cart_item.quantity}} </label> <a class="btn btn-success" onclick=add('{{cart_item.product.id}}')> + </a></td>
+                <td><label id='{{ cart_item.product.id }}p'>{{cart_item.price}} </label></td>
+
+                <td><button class="btn btn-danger" type='button' onclick='swal({ title: "Warning", text: "Remove this item from cart", buttons: { cancel: true, confirm:"Remove" } }).then((value) => { if (value) { window.location.href = "/deleteitem/{{cart_item.product.id }} "; } });'href=>Remove </button></td>
+                
+                <td></td>
+            <tr>
+        <tbody>
+        {% endfor %}
+</table>
+<b>TOTAL   =</b><b id='total'>{{total}}</b>
+<br>
+<br>
+<br><br> Apply Coupon<input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField"/>
+       <button onclick= 'discount()'> Submit </button>
+<a class="btn btn-success" href="/order/" style='float: right; margin-right: 350px;'>Place Order>>> </a>
+
+        
+
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+        
+
+    
+    <script>
+
+        function discount(){
+            code=document.getElementById("searchTxt").value;
+            console.log(code)
+            $.ajaxSetup({
+              data:{csrfmiddlewaretoken:'{{csrf_token}}'}
+          })
+          $.ajax({
+              url:"/discount",
+              method:"POST",
+              data:{'code':code},
+              success:function(data){
+                
+                  swal({ title: "Info", text: 'apply discount' , buttons: { cancel: true, confirm:"Yes" } }).then((value) => { if (value) { window.location.href = "/order/"; } });
+                
+              }
+          })
+          }
+
+        function sub(id){
+            $.ajaxSetup({
+                data:{csrfmiddlewaretoken:'{{csrf_token}}'}
+            })
+            $.ajax({
+                url:"/sub",
+                method:"POST",
+                data:{'id':id},
+                success:function(data){
+                    document.getElementById(id+'q').innerHTML=data['updated_quantity']
+                    document.getElementById(id+'p').innerHTML=data['updated_price']
+                    document.getElementById('total').innerHTML=data['updatedtotal']
+        
+                }
+        
+            })
+        }
+
+        function add(id){
+            $.ajaxSetup({
+                data:{csrfmiddlewaretoken:'{{csrf_token}}'}
+            })
+            $.ajax({
+                url:"/add",
+                method:"POST",
+                data:{'id':id},
+                success:function(data){
+                    document.getElementById(id+'q').innerHTML=data['updated_quantity']
+                    document.getElementById(id+'p').innerHTML=data['updated_price']
+                    document.getElementById('total').innerHTML=data['updatedtotal']
+        
+                }
+        
+            })
+        }
+        
+        </script>
+{% include 'footer.html' %}
+
+
+{% endblock %}

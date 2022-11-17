@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div ="row"
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+<div class='row'>
+
+    Create Product Offer
+<form action='/productoffer/' method='post'> 
+    {% csrf_token %}
+In product
+    <select name="product">
+        {% for item in product%}
+        <option >{{item.name}}</option>
+        {% endfor %}
+      </select>
+Discount of 
+<input type='text' name='discount'>
+<button type='submit'>Create Offer</button>
+</form>
+
+Create Category Offer
+<form action='/categoryoffer/' method='post'> 
+    {% csrf_token %}
+In Category
+    <select name="category">
+        {% for item in category%}
+        <option >{{item.category}}</option>
+        {% endfor %}
+      </select>
+Discount of 
+<input type='text' name='discount'>
+<button type='submit'>Create Offer</button>
+</form>
+
+Active Offers
+<table class="table table-boardered">
+    <thread>
+        <tr>
+            <th> Sl. </th>
+            <th> PRODUCT </th>
+            <th> DISCOUNT</th>
+            <th>CANACEL</th>
+        </tr>
+    </thread>
+    {% for data in poffers %}
+    <tbody>
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.product}}</td>
+            <td>{{data.discount}}%</td>
+            <td> <a style="width:200px" class="btn btn-danger" href='/cancelloffer/{{data.product}}'>Cancell</a></td>
+
+       
+        <tr>
+    <tbody>
+    {% endfor %}
+    </table>
+
+    <table class="table table-boardered">
+      <thread>
+          <tr>
+              <th> Sl. </th>
+              <th> CATEGORY </th>
+              <th> DISCOUNT</th>
+              <th>CANACEL</th>
+          </tr>
+      </thread>
+      {% for data in coffers %}
+      <tbody>
+          <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{data.category}}</td>
+              <td>{{data.discount}}%</td>
+              <td> <a style="width:200px" class="btn btn-danger" href='/cancelloffer2/{{data.category}}'>Cancell</a></td>
+  
+         
+          <tr>
+      <tbody>
+      {% endfor %}
+      </table>
+    
+
+
+
+
+</div>
+{% endblock %}

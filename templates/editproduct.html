@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+
+</head>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/editproduct/{{data.id}}' method='POST' autocomplete='off'>
+      {% csrf_token %}
+        <div class="form-outline mb-12">
+          Prouduct Name <input type="Text" name="name" class="form-control" required value={{data.name}}>
+          Prouduct Details <input type="Text" name="detail" class="form-control" required value={{data.detail}}>
+          Price per Item <input type="number" name="price" class="form-control" required value={{data.price}}>
+          Stock <input type="number" name="stock" class="form-control" required value={{data.stock}}>
+          Brand <input type="Text" name="brand" class="form-control" required value={{data.brand}} 
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Edit</button><br>
+        <label style="color:red">{{message}}</label>
+
+          </button>
+        </div>
+      </form>
+</div>
+
+  
+
+
+{% endblock %}

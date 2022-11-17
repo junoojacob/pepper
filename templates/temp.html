@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/addproduct/' method='POST' autocomplete='off'>
+      {% csrf_token %}
+        <div class="form-outline mb-12">
+          Prouduct Name <input type="Text" name="name" class="form-control" required/>
+          Prouduct details <input type="Text" name="detail" class="form-control" required/>
+          Price per item <input type="number" name="price" class="form-control" required/>
+          Stock <input type="number" name="stock" class="form-control" required/>
+          Brand <input type="Text" name="brand" class="form-control" required/>
+          category <input type="Text" name="category" class="form-control" required/>
+          Images<input type="file" name="image1" class="form-control" required/>
+          <input type="file" name="image2" class="form-control" required/>
+          <input type="file" name="image3" class="form-control" required/>
+          <input type="file" name="image4" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <div id="image-box" class="image-container"></div>
+            <button class="btn btn-outline-info" id="crop-btn" style="width: 100%; margin-top: 10px; display: none;" type="button">Crop</button>
+            <button class="btn btn-outline-info" id="confirm-btn" style="width: 100%; margin-top: 10px;" type="submit">Post</button>
+          </div>
+        
+        <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button><br>
+        <label style="color:red">{{message}}</label>
+
+          </button>
+        </div>
+      </form>
+</div>
+
+
+
+{% endblock %}

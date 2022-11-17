@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/register/' method='POST' autocomplete='off'>
+      {% csrf_token %}
+        <div class="form-outline mb-4">
+          <input type="Username" name="username" class="form-control" required/>
+          <label class="form-label" for="form2Example1">Prefered User Name</label>
+        </div>
+      
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+          <input type="number" name="phone" class="form-control" required/>
+          <label class="form-label" for="form2Example2">Phone number</label>
+        </div>
+
+        <div class="form-outline mb-4">
+            <input type="email" name="email" class="form-control" required/>
+            <label class="form-label" for="form2Example2">Email</label>
+          </div>
+      
+        <div class="form-outline mb-4">
+            <input type="password" name="password" class="form-control" required/>
+            <label class="form-label" for="form2Example2">Password</label>
+        </div>
+
+        <div class="form-outline mb-4">
+            <input type="password" name="password1" class="form-control" required/>
+            <label class="form-label" for="form2Example2">Re-Password</label>
+        </div>
+        
+        <!-- 2 column grid layout for inline styling -->
+       
+      
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button><br>
+        <label style="color:red">{{message}}</label>
+
+      
+        <!-- Register buttons -->
+        <div class="text-center">
+          <p>Already a member? <a href="/login">Login</a></p>
+          
+        </div>
+      </form>
+</div>
+
+{% endblock %}

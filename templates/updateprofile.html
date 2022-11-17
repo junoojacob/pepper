@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+
+</head>
+
+  <div class='col-sm-8'>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/updateprofile/' method='POST' autocomplete='off' >
+      {% csrf_token %}
+        <div class="form-outline mb-12">
+         User Name <input type="label" name="username" value="{{user.username}}" class="form-control" />
+         First Name <input type="Text" name="name" value="{{user.first_name}}" class="form-control" />
+         Phone <input type="number" name="phone" value="{{user.phone}}" class="form-control" />
+         {% for item in address reversed %}
+
+         <tr>
+           <td>{{forloop.counter}}</td>
+           <td>{{item.building}}</td>
+           <td>{{item.street}}</td>
+           <td>{{item.area}}</td>
+           <td>{{item.po}}</td>
+           <td>{{item.district}}</td>
+           <td>{{item.state}}</td>
+         </tr>
+         {% endfor %}
+         Address 1<textarea type="text" name="address"  class="form-control" required/>{{user.address}}</textarea>
+     
+
+        </div>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary btn-block mb-4" value="/updateprofile/">Submit</button><br>
+        <label style="color:red">{{message}}</label>
+      </form>
+        <form action='/addaddress/' method='POST' autocomplete='off' >
+          {% csrf_token %}
+            <div class="form-outline mb-12">
+             Building <input type="Text" name="building"  class="form-control" required/>
+             Street <input type="Text" name="street"  class="form-control" required/>
+             Area <input type="Text" name="area" class="form-control" required/>
+             P.O <input type="Text" name="po"  class="form-control" required/>
+             District <input type="Text" name="district"  class="form-control" required/>
+             State<input type="Text" name="state"  class="form-control" required/>
+         
+    
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary btn-block mb-4" value="/addaddress/">Add Address</button><br>
+
+          </button>
+        </div>
+      </form>
+</div>
+</div>
+
+    
+
+{% endblock %}

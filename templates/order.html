@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+
+<h4 class="page-header text-primary text-center">Place Order</h4>
+<div class="row">
+    <div class="col">
+        <h5 class="text-primary text-center">Current Order</h5>
+         {{request.session.discount}}
+        <table class="table table-boardered">
+            <thread>
+                <tr>
+                    <th> Sl </th>
+                    <th> Item </th>
+                    <th>  Nos</th>
+                    <th> Price</th>
+                    <th>  </th>
+    
+                    
+                    <th>  </th>
+    
+                </tr>
+            </thread>
+            {% for cart_item in cart_items %}
+            <tbody>
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{cart_item.product.name}}</td>
+                    <td> {{cart_item.quantity}} </td>
+                    <td> {% widthratio  request.session.discount 1 cart_item.price  %}</td>
+                
+                <tr>
+            <tbody>
+            {% endfor %}
+        </table>
+        <h5  id='Gtotal' style='float:right;padding-right: 140px' >{{total}}</h5>
+        <b>TOTAL</b>
+
+        
+       
+      
+        
+
+    
+      </div>
+      <div class="col">
+        <h5 class="text-primary text-center">Delivery Address and Payment</h5>
+        <br>
+
+        
+
+        <form action="/checkout/" method="POST" id="form__submit">
+            {% csrf_token %}
+            Select the deliver address<br>
+
+            <select name="address" id='select' style="width:400px; height:100px" class="form-select" aria-label="Default select example">
+              {% for add in address %}
+                <option value={{add.id}}>{{add.building}},{{add.street}},{{add.area}},{{add.po}},{{add.district}},{{add.state}}</option>
+          
+              {% endfor %}
+                <option> Add or Edit Address </option>
+            </select>
+
+
+
+        <input id='check' type="checkbox" required>By clicking you are agreeing to our policies.<br><br>
+        <input type="submit"  value="Cash On Delivery" id='button' onclick="submit()"><br><br>
+        
+        <script>
+          document.getElementById("select").onchange = function() {
+              if (this.value=="Add or Edit Address") {
+                  window.location.href ="/profile/";
+              }        
+          };
+        </script>
+
+            <script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="rzp_test_HxUuQwTNW4Y560" // Enter the Test API Key ID generated from Dashboard → Settings → API Keys
+                data-amount={{Gtotal}} // Amount is in currency subunits. Hence, 29935 refers to 29935 paise or ₹299.35.
+                data-currency="INR"// You can accept international payments by changing the currency code. Contact our Support Team to enable International for your account
+                data-buttontext="Pay with Razorpay"
+                data-name="Acme Corp"
+                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                data-image="https://example.com/your_logo.jpg"
+                data-prefill.name="Gaurav Kumar"
+                data-prefill.email="gaurav.kumar@example.com"
+                data-theme.color="#F37254"
+            ></script>
+            <input type="hidden" custom="Hidden Element" name="hidden">
+            <br>
+
+        </form>
+        <script>
+            function submit()
+            let form = document.getElementById("button");
+            form.submit();
+        </script>
+        <br>
+        <br>
+        <div style="height:50px;width:150px">
+            <script src="https://www.paypal.com/sdk/js?client-id=AbxB7gi-cygfcgQZ9joNPQh159AMTJ-XVSvkKqBFADZMe88CV3Fl7t_wwhzjOT_GymDPPAD9BGUqbeUC&currency=USD"></script>
+    <!-- Set up a container element for the button -->
+    
+    <div id="paypal-button-container"></div>
+    
+    <script>
+      paypal.Buttons({
+        // Sets up the transaction when a payment button is clicked
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: {{dtotal}} // Can also reference a variable or function
+              }
+            }]
+          });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: (data, actions) => {
+          return actions.order.capture().then(function(orderData) {
+            // Successful capture! For dev/demo purposes:
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            const transaction = orderData.purchase_units[0].payments.captures[0];
+            let form = document.getElementById("form__submit");
+            form.submit();
+            
+          });
+        }
+      }).render('#paypal-button-container');
+    
+    </script>
+
+    
+        <br>
+      </div>
+</div>
+
+{% endblock %}

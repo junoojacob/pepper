@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+
+</head>
+<div class="row">
+  <div class='row'>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Admin Control</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="/admindash/" class="nav-link text-white" aria-current="page">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/adminuser/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+            Users
+          </a>
+        </li>
+        <li>
+          <a href="/adminproducts/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="/admincategory/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+            Category
+          </a>
+        </li>
+        <li>
+          <a href="/adminorder/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="/reports/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+            Reports
+          </a>
+        </li>
+        <li>
+          <a href="/coupons/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+            Cupons
+          </a>
+        </li>
+        <li>
+          <a href="/offers/" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+            Offers
+          </a>
+        </li>
+      </ul>
+      <hr>
+      
+    </div>
+  <div class='col-sm-8'>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/addproduct/' method='POST' autocomplete='off' enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="form-outline mb-12">
+          Prouduct Name <input type="Text" name="name" class="form-control" required/>
+          Prouduct Details <input type="Text" name="detail" class="form-control" required/>
+          Price per Item <input type="number" name="price" class="form-control" required/>
+          Stock <input type="number" name="stock" class="form-control" required/>
+          Brand <input type="Text" name="brand" class="form-control" required/>
+          Category Select
+          <select name="category" class="form-control" required/>
+          {% for data in datas %}
+            <option  >{{data.category}}</option>
+		      {%endfor%}
+          </select>
+          Images
+          <input type="file" name="image1" id="image1" class="form-control" required/>
+          <input type="file" name="image2" class="form-control" required/>
+          <input type="file" name="image3" class="form-control" required/>
+          <input type="file" name="image4" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <div id="image-box" class="image-container"></div>
+            <button class="btn btn-outline-info" id="crop-btn" style="width: 100%; margin-top: 10px; display: none;" type="button">Crop</button>
+            <button class="btn btn-outline-info" id="confirm-btn" style="width: 100%; margin-top: 10px;" type="submit">Post</button>
+
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button><br>
+        <label style="color:red">{{message}}</label>
+
+          </button>
+        </div>
+      </form>
+</div>
+</div>
+
+    <script>
+        
+        const imagebox = document.getElementById('image-box')
+        const crop_btn = document.getElementById('crop-btn')
+        const input = document.getElementById('image1')
+            input.addEventListener('change', ()=>{
+          const img_data = input.files[0]
+          const url = URL.createObjectURL(img_data)
+          
+          imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%;">`
+    
+          const image = document.getElementById('image')
+    
+          document.getElementById('image-box').style.display = 'block'
+          document.getElementById('crop-btn').style.display = 'block'
+          // Hiding the Post button
+          document.getElementById('confirm-btn').style.display = 'none'
+    
+          // Creating a croper object with the cropping view image
+          // The new Cropper() method will do all the magic and diplay the cropping view and adding cropping functionality on the website
+          // For more settings, check out their official documentation at https://github.com/fengyuanchen/cropperjs
+          const cropper = new Cropper(image, {
+          autoCropArea: 1,
+          viewMode: 1,
+          scalable: false,
+          zoomable: false,
+          movable: false,
+          minCropBoxWidth: 200,
+          minCropBoxHeight: 200,
+          })
+    
+          // When crop button is clicked this event will get triggered
+          crop_btn.addEventListener('click', ()=>{
+            // This method coverts the selected cropped image on the cropper canvas into a blob object
+            cropper.getCroppedCanvas().toBlob((blob)=>{
+              
+              // Gets the original image data
+              let fileInputElement = document.getElementById('image');
+              // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+              let file = new File([blob], img_data.name,{type:"image/*", lastModified:new Date().getTime()});
+              // Create a new container
+              let container = new DataTransfer();
+              // Add the cropped image file to the container
+              container.items.add('image1');
+              // Replace the original image file with the new cropped image file
+              fileInputElement.files = container.files;
+    
+              // Hide the cropper box
+              document.getElementById('image-box').style.display = 'none'
+              // Hide the crop button
+              document.getElementById('crop-btn').style.display = 'none'
+              // Display the Post button
+              document.getElementById('confirm-btn').style.display = 'block'
+    
+              });
+            });
+        });	
+    </script>
+hai
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+<style>
+  .g-height-50 {
+      height: 50px;
+  }
+
+  .g-width-50 {
+      width: 50px !important;
+  }
+
+  @media (min-width: 0) {
+      .g-pa-30 {
+          padding: 2.14286rem !important;
+      }
+  }
+
+  .g-bg-secondary {
+      background-color: #fafafa !important;
+  }
+
+  .u-shadow-v18 {
+      box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.15);
+  }
+
+  .g-color-gray-dark-v4 {
+      color: #777 !important;
+  }
+
+  .g-font-size-12 {
+      font-size: 0.85714rem !important;
+  }
+
+  .media-comment {
+      margin-top: 20px
+  }
+
+  .singleImageCanvasContainer {
+      overflow: hidden;
+      height: 200px;
+      width: 30%;
+      display: inline-block;
+      position: relative;
+      padding-right: 0px;
+      margin-right: 15px;
+      border: 2px solid #dfdfdf;
+      margin-bottom: 10px;
+      padding: 4px;
+      border-radius: .25rem;
+  }
+
+  .singleImageCanvasContainer .singleImageCanvasCloseBtn {
+      position: absolute;
+      right: 0;
+  }
+
+  .singleImageCanvasContainer .singleImageCanvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+</style>
+
+
+{% endblock %}

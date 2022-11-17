@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+
+<div class='row'>
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+
+<div class='col-sm-8'>
+    <form class="form-inline" action='/reports/' method='POST' autocomplete='off'>
+        {% csrf_token %}
+        <label>Start Date</label>
+        <input type="date"  placeholder="Starting Date" name="startdate" style='width:200px'required >
+        <label>End Date</label>
+        <input type="date"  placeholder="End Date" name="enddate" style='width:200px'required>
+        <button type="submit" style='width:200px'required>Generate</button>
+    </form>
+    <a href="/PDF/" style="width:300px" class="btn btn-sm btn-success">Download Pdf</a>
+    <a href='/CSV/' style="width:300px" class="btn btn-sm btn-success"> Download CSV </a>
+<h4 class="page-header text-primary text-center">Sales Report</h4>
+
+    <table class="table table-boardered">
+        <thread>
+            <tr>
+                <th> Sl. </th>
+                <th> Date </th>
+                <th> Order Number</th>
+                <th> Item </th>
+                <th> Quantity </th>
+                <th> Price </th>
+            </tr>
+        </thread>
+        {% for data in order %}
+           {% if  data.status != "Cancelled"  %}
+              {% if  data.status != "Approved" %}
+                    <tbody>
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{data.orderDate}}</td>
+                            <td>{{data.orderNumber}}</td>
+                            <td>{{data.product}}</td>
+                            <td>{{data.quantity}}</td>
+                            <td>{{data.sale}}</td>
+                        <tr>
+                    <tbody>
+                {%endif%}
+            {%endif%}
+        {% endfor %}
+
+    </table>
+        <center>
+            <h5 style="float:right; padding-right: 0px;"class="page-header text-danger ">TOTAL  =  {{total}}.00₹</h5>
+            
+    </div>
+    
+
+
+{% endblock %}

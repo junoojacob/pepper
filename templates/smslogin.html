@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    <center>
+    <form action='/smslogin/' method='POST' autocomplete='off'>
+      {% csrf_token %}
+
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+          <input type="Username" name="phone" class="form-control" required/>
+          <label class="form-label" for="form2Example1">Number</label>
+        </div>
+      
+        <button type="submit" class="btn btn-primary btn-block mb-4">Send OTP</button>
+        <label style="color:red">{{message}}</label>
+      
+        <!-- Register buttons -->
+        <div class="text-center">
+          <p>Go back to login : <a href="/signin/">Login</a></p>
+          
+        </div>
+      </form>
+</div>
+
+{% endblock %}

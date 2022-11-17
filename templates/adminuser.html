@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+
+<div class='row'>
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+<div class='col-sm-8'>
+
+<h4 class="page-header text-primary text-center">User Details</h4>
+    <table class="table table-boardered">
+        <thread>
+            <tr>
+                <th> Sl. </th>
+                <th> USER </th>
+                <th> PHONE</th>
+                <th> STATUS </th>
+                <th>BLOCK</th>
+            </tr>
+        </thread>
+        {% for data in datas %}
+        <tbody>
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{data.username}}</td>
+                <td>{{data.phone}}</td>
+                <td id='{{ data.id }}s'>{{data.block}}</td>
+                    {% if data.block == 'True' %}
+                        <td><button id='{{ data.id }}q'  class="btn btn-danger" onclick=block('{{data.id}}')>Unblock</button></td>
+                    {%else%}
+                        <td><button id='{{ data.id }}q'  class="btn btn-danger" onclick=block('{{data.id}}')>Block</button></td>
+                {%endif%}
+           
+            <tr>
+        <tbody>
+        <center>
+        {% endfor %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+        <script>
+          function b(id){
+            
+            action=document.getElementById(id+'s').innerHTML
+            $.ajaxSetup({
+              data:{csrfmiddlewaretoken:'{{csrf_token}}'}
+          })
+          $.ajax({
+              url:"/block",
+              method:"POST",
+              data:{'id':id,'action':action},
+              success:function(data){
+                  document.getElementById(id+'s').innerHTML=data['update']
+                  document.getElementById(id+'q').innerHTML=data['button']
+              }
+          })
+          }
+        
+          function block(id){
+            swal({
+              title: "Are you sure?",
+              text: "You are going to change the user status",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                swal("User Status Changed", {
+                  icon: "success",
+                });
+                b(id)
+              } else {
+                swal("Status of User Not changed");
+              }
+            });
+          }
+          </script>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+
+
+
+
+<script>
+    window.onload = function(event) {
+        swal("Thank You!!! Your Order is Confirmed.")
+    }
+  </script>
+  
+
+<h4 class="page-header text-primary text-center">Current Order</h4>
+<div class="row">
+    <div class="col">
+        <h5 class="text-primary text-center">Invoice</h5>
+        <i class="text-primary text-center"></i>
+        <table class="table table-boardered">
+            <thread>
+                <tr>
+                    <th> Sl </th>
+                    <th> Item </th>
+                    <th>  Nos</th>
+                    <th> Price</th>
+                    <th>  </th>
+    
+                    
+                    <th>  </th>
+    
+                </tr>
+            </thread>
+            {% for currentorder in currentorders %}
+            <tbody>
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{currentorder.product.name}}</td>
+                    <td>{{currentorder.quantity}} </td>
+                    <td>{{currentorder.price}}</td>
+                
+                <tr>
+            <tbody>
+                
+            {% endfor %}
+        </table>
+        <h5 style='float:right;padding-right: 140px' >Grand Total     =    {{total}}</h5>
+        
+        
+        
+
+    
+      </div>
+      
+
+{% endblock %}

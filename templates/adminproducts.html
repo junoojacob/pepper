@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div class='row'>
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-success class='col-sm-4'" style="width: 210px;float:left;height:600px">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Admin Control</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/admindash/" class="nav-link text-white" aria-current="page">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/adminuser/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Users
+        </a>
+      </li>
+      <li>
+        <a href="/adminproducts/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="/admincategory/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Category
+        </a>
+      </li>
+      <li>
+        <a href="/adminorder/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="/reports/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Reports
+        </a>
+      </li>
+      <li>
+        <a href="/coupons/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Cupons
+        </a>
+      </li>
+      <li>
+        <a href="/offers/" class="nav-link text-white">
+          <svg class="bi me-2" width="16" height="16"><use href="adminuser"></use></svg>
+          Offers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    
+  </div>
+  <div class='col-sm-6'>
+    <h4 class="page-header text-primary text-center">Product Details</h4>
+        <table class="table table-boardered">
+            <thread>
+                <tr>
+                    <th> Sl. </th>
+                    <th> Product </th>
+                    <th> Details</th>
+                    <th> Price </th>
+                    <th> Stock </th>
+                    <th> Brand </th>
+                    <th> Category </th>
+                    <th>DELETE</th>
+                </tr>
+            </thread>
+            {% for data in datas %}
+            <tbody>
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                
+                    <td>{{data.name}}</td>
+                    <td>{{data.detail}}</td>
+                    <td>{{data.price}}</td>
+                    <td>{{data.stock}}</td>
+                    <td>{{data.brand}}</td>
+                    <td>{{data.category}}</td>
+                    <td><a class="btn btn-danger"  onclick=del('{{data.id}}')>DELETE </a></td>
+                    <td><a class="btn btn-danger" href="/editproduct/{{data.id}}">  EDIT   </a></td>
+                <tr>
+            <tbody>
+              {% endfor %}
+            </table>
+
+  
+        
+        <a href="/addproduct/">Add New Products</a>
+
+    </div>
+  
+      
+      
+        
+      
+      </div>
+</div>
+<script>
+    function del(id){
+      swal({
+        title: "Are you sure?",
+        text: "You are going delete this item .",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Item Deleted", {
+            icon: "success",
+          });
+          window.location = '/productdelete/'+id;
+        } else {
+          swal("Item Not Deleted");
+        }
+      });
+    }
+</script>
+
+{% endblock %}

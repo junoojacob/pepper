@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{%load static%}
+{% block content %}
+<div style='min-height: 80vh' >
+    <h4 class="page-header text-primary text-center">User Profile</h4>
+    <div class="row">
+        <div class="col">
+            <h5 class="text-primary text-center">User Details</h5>
+    
+            <table class="table" style="width:200px">
+                <col style="width:50px">
+	            <col style="width:50%">
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>User Name</td>
+                    <td>{{user.username}}</td>
+                  </tr>
+                  <tr>
+                    <td>First Name</td>
+                    <td>{{user.first_name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td>{{user.phone}}</td>
+                  </tr>
+                  {% for item in address reversed %}
+
+                  <tr>
+                    <td>Address{{forloop.counter}}</td>
+                    <td>{{item.building}},</td>
+                    <td>{{item.street}},</td>
+                    <td>{{item.area}},</td>
+                    <td>{{item.po}},</td>
+                    <td>{{item.district}},</td>
+                    <td>{{item.state}},</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <a class="btn btn-success" href="/updateprofile/" style='float: right; margin-right: 350px;'>Edit Profile </a>
+        </div>
+        <div class="col">
+            <h5 class="text-primary text-center">All Orders</h5>
+            <table class="table table-boardered">
+                <thread>
+                    <tr>
+                        <th> Sl </th>
+                        <th> Item </th>
+                        <th> Qunatity</th>
+                        <th> Order Number </th>
+                        <th> Track Order </th>
+                        <th> Actions Avalible</th>
+
+                        
+                        <th>  </th>
+        
+                    </tr>
+                </thread>
+            {% for order in orders reversed %}
+                <tbody>
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{order.product}}</td>
+                        <td> {{order.quantity}} </td>
+                        <td>{{order.orderNumber}}</td>
+                        <td>{{order.status}}</td>
+                        {% if  order.status == "Ordered" %}
+                        <td> <a class="btn btn-success" href='/cancelorder/{{order.id}}'>Cancel Order</a></td>
+                        {% elif order.status == "Delivered" %}
+                        <td> <a class="btn btn-success" href='/retur/{{order.id}}'>Return</a></td>
+                        {%endif %}
+
+                    
+                    <tr>
+                <tbody>
+                {% endfor %}
+            </table>
+
+        
+
+
+                <input type="hidden" custom="Hidden Element" name="hidden">
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}
